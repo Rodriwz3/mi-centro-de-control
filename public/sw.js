@@ -3,7 +3,7 @@
 
 importScripts('./ics.js');
 
-const CACHE = 'mi-centro-v7';
+const CACHE = 'mi-centro-v8';
 const ARCHIVOS = [
   './',
   './index.html',

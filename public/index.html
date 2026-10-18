@@ -303,6 +303,11 @@
           <button type="button" class="boton boton-secundario" data-accion="importar">Restaurar copia</button>
           <input type="file" id="archivo-importar" accept="application/json,.json" hidden>
         </div>
+        <p class="nota">¿No se descarga? Pasá los datos como texto, por el portapapeles:</p>
+        <div class="acciones-datos">
+          <button type="button" class="boton boton-secundario" data-accion="copiar-texto">Copiar copia</button>
+          <button type="button" class="boton boton-secundario" data-accion="pegar-texto">Pegar copia</button>
+        </div>
       </div>
 
       <h2>Acerca de</h2>
@@ -391,6 +396,21 @@
         <button type="submit" class="boton">Guardar</button>
       </div>
       <button type="button" class="boton-texto boton-peligro" data-accion="eliminar-editado">Eliminar</button>
+    </form>
+  </dialog>
+
+  <!-- Hoja para pasar la copia como texto (cuando el iPhone no deja descargar) -->
+  <dialog class="hoja" id="dialogo-texto" aria-labelledby="texto-titulo">
+    <form id="form-texto" autocomplete="off">
+      <h3 id="texto-titulo">Copia como texto</h3>
+      <p class="nota" id="texto-ayuda"></p>
+      <label class="etiqueta">Datos
+        <textarea name="datos" rows="6" spellcheck="false" autocapitalize="off" autocorrect="off"></textarea>
+      </label>
+      <div class="acciones">
+        <button type="button" class="boton boton-secundario" data-accion="cerrar-dialogo">Cerrar</button>
+        <button type="submit" class="boton" id="texto-boton"></button>
+      </div>
     </form>
   </dialog>
 

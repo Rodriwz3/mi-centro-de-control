@@ -1124,6 +1124,8 @@ const ACCIONES = {
   },
   exportar: () => exportar(),
   importar: () => $('#archivo-importar').click(),
+  'copiar-texto': () => abrirTexto('copiar'),
+  'pegar-texto': () => abrirTexto('pegar'),
 };
 
 document.addEventListener('click', (evento) => {
@@ -1245,9 +1247,11 @@ $('#form-frase').addEventListener('submit', (evento) => {
 
 // ---------- Copia de seguridad ----------
 
+const contenidoCopia = (espacios) =>
+  JSON.stringify({ app: 'mi-centro-de-control', version: 1, exportado: new Date().toISOString(), ...estado }, null, espacios);
+
 function exportar() {
-  const contenido = JSON.stringify({ app: 'mi-centro-de-control', version: 1, exportado: new Date().toISOString(), ...estado }, null, 2);
-  const url = URL.createObjectURL(new Blob([contenido], { type: 'application/json' }));
+  const url = URL.createObjectURL(new Blob([contenidoCopia(2)], { type: 'application/json' }));
   const enlace = el('a', { href: url, download: `mi-centro-${claveDia()}.json` });
   document.body.append(enlace);
   enlace.click();
@@ -1265,16 +1269,72 @@ $('#archivo-importar').addEventListener('change', async (evento) => {
     avisar('El archivo es demasiado grande');
     return;
   }
+  restaurar(await archivo.text());
+});
+
+// Devuelve true si se restauró. Lo usan el archivo y el texto pegado.
+function restaurar(texto) {
+  if (texto.length > 1_000_000) {
+    avisar('La copia es demasiado grande');
+    return false;
+  }
+  let datos;
   try {
-    const datos = normalizar(JSON.parse(await archivo.text()));
-    const resumen = `${datos.tareas.length} tareas, ${datos.habitos.length} hábitos, ${datos.objetivos.length} objetivos y ${datos.frases.length} frases`;
-    if (!confirm(`Se van a reemplazar tus datos actuales por los de la copia (${resumen}). ¿Seguir?`)) return;
-    estado = datos;
-    guardar();
-    render();
-    avisar('Copia restaurada');
+    datos = normalizar(JSON.parse(texto));
   } catch {
-    avisar('No se pudo leer el archivo');
+    avisar('No se pudo leer la copia');
+    return false;
+  }
+  const resumen = `${datos.tareas.length} tareas, ${datos.habitos.length} hábitos, ${datos.objetivos.length} objetivos y ${datos.frases.length} frases`;
+  if (!confirm(`Se van a reemplazar tus datos actuales por los de la copia (${resumen}). ¿Seguir?`)) return false;
+  estado = datos;
+  guardar();
+  render();
+  avisar('Copia restaurada');
+  return true;
+}
+
+// Copia como texto: en el iPhone, la app abierta desde la pantalla de inicio
+// a veces no descarga archivos, y con http:// tampoco hay menú Compartir.
+let modoTexto = 'copiar';
+
+function abrirTexto(modo) {
+  modoTexto = modo;
+  const form = $('#form-texto');
+  const copiar = modo === 'copiar';
+  $('#texto-titulo').textContent = copiar ? 'Copiar copia' : 'Pegar copia';
+  $('#texto-ayuda').textContent = copiar
+    ? 'Tocá Copiar y después, en la otra app, Ajustes → Pegar copia.'
+    : 'Mantené apretado el cuadro, tocá Pegar y después Restaurar.';
+  $('#texto-boton').textContent = copiar ? 'Copiar' : 'Restaurar';
+  form.elements.datos.value = copiar ? contenidoCopia() : '';
+  $('#dialogo-texto').showModal();
+}
+
+async function copiarTexto(campo) {
+  try {
+    await navigator.clipboard.writeText(campo.value);
+    return true;
+  } catch {
+    // Sin HTTPS no existe navigator.clipboard: se copia seleccionando el texto.
+    campo.focus();
+    campo.setSelectionRange(0, campo.value.length);
+    return document.execCommand('copy');
+  }
+}
+
+$('#form-texto').addEventListener('submit', async (evento) => {
+  evento.preventDefault();
+  const campo = evento.currentTarget.elements.datos;
+  if (modoTexto === 'pegar') {
+    if (restaurar(campo.value.trim())) $('#dialogo-texto').close();
+    return;
+  }
+  if (await copiarTexto(campo)) {
+    cambiar(() => { estado.ajustes.ultimaCopia = Date.now(); });
+    avisar('Copia copiada. Ahora pegala en la otra app.');
+  } else {
+    avisar('No se pudo copiar: mantené apretado el texto y elegí Copiar');
   }
 });
 
