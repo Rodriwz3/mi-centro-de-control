@@ -1,0 +1,22 @@
+# Cosas que nunca se suben a GitHub
+
+# Dependencias (hoy no hay, pero por las dudas)
+node_modules/
+
+# Secretos y configuración local
+.env
+.env.*
+*.pem
+*.key
+
+# Copias de seguridad de la app: tienen tus datos personales
+*.json
+!package.json
+!package-lock.json
+
+# Archivos del sistema y del editor
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+*.log

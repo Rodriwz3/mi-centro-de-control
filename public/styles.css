@@ -1,0 +1,608 @@
+/* Mi Centro de Control · by Rodricarabajal
+   Estilo inspirado en las apps de Apple (Recordatorios, Salud, Ajustes). */
+
+:root {
+  color-scheme: light dark;
+  --fondo: #f2f2f7;
+  --superficie: #ffffff;
+  --segmento-activo: #ffffff;
+  --texto: #000000;
+  --texto-2: rgba(60, 60, 67, 0.6);
+  --separador: rgba(60, 60, 67, 0.29);
+  --relleno: rgba(118, 118, 128, 0.12);
+  --azul: #007aff;
+  --rojo: #ff3b30;
+  --naranja: #ff9500;
+  --verde: #34c759;
+  --rosa: #ff2d55;
+  --sobre-acento: #ffffff;
+  --radio: 12px;
+  --alto-barra: 56px;
+  --serif: ui-serif, "New York", "Iowan Old Style", Georgia, serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fondo: #000000;
+    --superficie: #1c1c1e;
+    --segmento-activo: #636366;
+    --texto: #ffffff;
+    --texto-2: rgba(235, 235, 245, 0.6);
+    --separador: rgba(84, 84, 88, 0.6);
+    --relleno: rgba(118, 118, 128, 0.24);
+    --azul: #0a84ff;
+    --rojo: #ff453a;
+    --naranja: #ff9f0a;
+    --verde: #30d158;
+    --rosa: #ff375f;
+  }
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+  font-size: 17px;
+  line-height: 1.3;
+  background: var(--fondo);
+  color: var(--texto);
+  /* Respeta la isla dinámica y la barra de inicio del iPhone */
+  padding:
+    env(safe-area-inset-top)
+    max(16px, env(safe-area-inset-right))
+    calc(var(--alto-barra) + env(safe-area-inset-bottom) + 28px)
+    max(16px, env(safe-area-inset-left));
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+}
+
+.encabezado, main { max-width: 640px; margin: 0 auto; }
+.encabezado { padding: 18px 4px 6px; }
+.fecha { margin: 0; color: var(--texto-2); font-size: 13px; font-weight: 600; letter-spacing: 0.02em; text-transform: uppercase; }
+h1 { margin: 2px 0 0; font-size: 34px; font-weight: 700; letter-spacing: 0.01em; }
+h2 { margin: 26px 4px 8px; font-size: 20px; font-weight: 700; }
+
+.titulo-seccion { display: flex; justify-content: space-between; align-items: baseline; }
+.titulo-seccion a, .enlace { color: var(--azul); font-size: 15px; text-decoration: none; }
+
+/* ---------- Frase del día ---------- */
+.frase {
+  margin: 10px 0 0;
+  padding: 18px 18px 14px;
+  border-radius: 16px;
+  background: var(--superficie);
+}
+.frase blockquote { margin: 0; font-family: var(--serif); font-size: 20px; line-height: 1.4; }
+.frase-autor { margin: 10px 0 0; color: var(--texto-2); font-size: 15px; }
+.frase-pie { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+.frase-vacia { color: var(--texto-2); font-size: 15px; }
+
+/* ---------- Anillos de resumen ---------- */
+.resumen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+.tarjeta {
+  display: grid;
+  justify-items: start;
+  gap: 6px;
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--superficie);
+  color: inherit;
+  text-decoration: none;
+}
+.anillo { width: 40px; height: 40px; transform: rotate(-90deg); }
+.anillo circle { fill: none; stroke-width: 4; stroke-linecap: round; transition: stroke-dasharray 0.4s; }
+.anillo .pista { opacity: 0.2; }
+.tarjeta-valor { font-size: 24px; font-weight: 700; line-height: 1; font-variant-numeric: tabular-nums; }
+.tarjeta-etiqueta { color: var(--texto-2); font-size: 12px; font-weight: 500; }
+
+/* ---------- Formularios ---------- */
+.formulario, .panel {
+  display: grid;
+  gap: 10px;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: var(--radio);
+  background: var(--superficie);
+}
+.formulario-linea { grid-template-columns: 1fr auto; }
+.fila { display: flex; gap: 8px; }
+.fila > * { flex: 1; min-width: 0; }
+.etiqueta { display: grid; grid-template-columns: minmax(0, 1fr); gap: 4px; color: var(--texto-2); font-size: 13px; }
+
+input[type="text"], input[type="date"], input[type="time"], select, textarea {
+  width: 100%;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 0;
+  border-radius: 10px;
+  background: var(--relleno);
+  color: var(--texto);
+  font: inherit;
+  font-size: 17px; /* con menos de 16px el iPhone hace zoom al escribir */
+}
+textarea { resize: vertical; min-height: 80px; line-height: 1.35; }
+input[type="date"], input[type="time"] { -webkit-appearance: none; appearance: none; }
+::placeholder { color: var(--texto-2); }
+
+.boton {
+  min-height: 44px;
+  padding: 10px 18px;
+  border: 0;
+  border-radius: var(--radio);
+  background: var(--azul);
+  color: var(--sobre-acento);
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+.boton-secundario { background: var(--relleno); color: var(--azul); }
+.boton-texto {
+  min-height: 36px;
+  padding: 6px 4px;
+  border: 0;
+  background: none;
+  color: var(--azul);
+  font: inherit;
+  font-size: 15px;
+  cursor: pointer;
+}
+.boton:active, .boton-texto:active { opacity: 0.6; }
+:focus-visible { outline: 3px solid var(--azul); outline-offset: 2px; }
+
+.nota { margin: 0; color: var(--texto-2); font-size: 13px; line-height: 1.4; }
+.nota-seccion { margin: 18px 4px 8px; }
+.acciones-datos { display: flex; flex-wrap: wrap; gap: 8px; }
+.firma { margin: 28px 0 0; color: var(--texto-2); font-size: 13px; text-align: center; }
+
+/* ---------- Control segmentado ---------- */
+.segmentado { display: flex; margin: 16px 0 10px; padding: 2px; border-radius: 9px; background: var(--relleno); }
+.segmentado button {
+  flex: 1;
+  min-height: 32px;
+  padding: 4px;
+  border: 0;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--texto);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+}
+.segmentado button[aria-pressed="true"] {
+  background: var(--segmento-activo);
+  font-weight: 600;
+  box-shadow: 0 3px 8px rgb(0 0 0 / 0.12), 0 3px 1px rgb(0 0 0 / 0.04);
+}
+
+/* ---------- Listas agrupadas (como Ajustes y Recordatorios) ---------- */
+.lista { margin: 0; padding: 0; overflow: hidden; border-radius: var(--radio); background: var(--superficie); list-style: none; }
+.item { display: flex; align-items: flex-start; padding-left: 8px; }
+.item-linea {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+  min-width: 0;
+  padding: 11px 6px 11px 0;
+}
+.item + .item .item-linea { border-top: 0.5px solid var(--separador); }
+.item-objetivo { padding-left: 16px; }
+.item-cuerpo { flex: 1; min-width: 0; padding-top: 1px; }
+.item-titulo { margin: 0; overflow-wrap: anywhere; }
+.item.hecho .item-titulo { color: var(--texto-2); }
+.item-sub { margin: 3px 0 0; color: var(--texto-2); font-size: 15px; }
+.excl { margin-right: 4px; color: var(--naranja); font-weight: 700; }
+.vence-vencida { color: var(--rojo); }
+.vence-hoy { color: var(--azul); }
+.vacio { padding: 18px 16px; color: var(--texto-2); font-size: 15px; text-align: center; }
+
+/* Círculo para marcar como hecho (área táctil de 44px) */
+.check, .icono-boton {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.check { color: transparent; }
+.check svg { width: 24px; height: 24px; padding: 3px; border: 1.5px solid var(--texto-2); border-radius: 50%; opacity: 0.8; }
+.check[aria-pressed="true"] { color: var(--sobre-acento); }
+.check[aria-pressed="true"] svg { border-color: var(--azul); background: var(--azul); opacity: 1; }
+.icono-boton { width: 36px; height: 34px; margin: -6px 0; border-radius: 8px; color: var(--texto-2); }
+.icono-boton svg { width: 20px; height: 20px; }
+.campana { color: var(--azul); }
+.borrar:hover { color: var(--rojo); }
+
+/* Hábitos: botón contador (+1 por toque) */
+.contador {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin-right: 2px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #ffffff;
+  cursor: pointer;
+}
+.contador .anillo { width: 30px; height: 30px; }
+.contador .anillo circle { stroke-width: 3.5; }
+.contador .anillo .pista { stroke: var(--texto-2); opacity: 0.35; }
+.contador-texto { position: absolute; font-size: 10px; font-weight: 700; color: var(--texto); font-variant-numeric: tabular-nums; }
+.contador.listo svg { width: 28px; height: 28px; padding: 4px; border-radius: 50%; background: var(--verde); }
+.contador:active { transform: scale(0.92); }
+.contador:disabled { cursor: default; opacity: 0.35; }
+.item.descanso .item-titulo { color: var(--texto-2); }
+.restar { color: var(--texto-2); }
+
+/* Formulario: elegir días de la semana */
+.dias-semana { margin: 0; padding: 0; border: 0; }
+.dias-semana legend { padding: 0; margin-bottom: 6px; }
+.chips-dias { display: flex; justify-content: space-between; gap: 6px; }
+.chip-dia { position: relative; }
+.chip-dia input { position: absolute; opacity: 0; pointer-events: none; }
+.chip-dia span {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--relleno);
+  color: var(--texto);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.chip-dia input:checked + span { background: var(--azul); color: var(--sobre-acento); }
+.chip-dia input:focus-visible + span { outline: 3px solid var(--azul); outline-offset: 2px; }
+
+/* Hábitos: últimos 7 días */
+.semana { display: flex; gap: 6px; margin-top: 8px; }
+.dia {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--relleno);
+  color: var(--texto-2);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.dia.lleno { background: var(--verde); color: #ffffff; }
+.dia.parcial { background: color-mix(in srgb, var(--verde) 35%, transparent); color: var(--texto); }
+.dia.libre { background: transparent; box-shadow: inset 0 0 0 1px var(--separador); opacity: 0.6; }
+.dia.hoy { box-shadow: 0 0 0 2px var(--fondo), 0 0 0 3.5px var(--azul); }
+
+/* Objetivos */
+.progreso { height: 6px; margin-top: 10px; overflow: hidden; border-radius: 999px; background: var(--relleno); }
+.progreso-relleno { height: 100%; border-radius: inherit; background: var(--azul); transition: width 0.2s; }
+.item-objetivo.logrado .progreso-relleno { background: var(--verde); }
+.deslizador { display: flex; align-items: center; gap: 10px; margin-top: 6px; color: var(--texto-2); font-size: 15px; }
+.deslizador input { flex: 1; min-height: 32px; accent-color: var(--azul); }
+.porcentaje { min-width: 3.2em; color: var(--texto); font-weight: 600; text-align: right; font-variant-numeric: tabular-nums; }
+.logrado-texto { margin: 4px 0 0; color: var(--verde); font-size: 15px; font-weight: 600; }
+
+/* Frases guardadas */
+.frase-texto { margin: 0; font-family: var(--serif); font-size: 17px; line-height: 1.4; overflow-wrap: anywhere; }
+
+/* ---------- Hoja para crear recordatorios ---------- */
+.hoja {
+  width: min(100% - 24px, 420px);
+  margin: auto auto max(12px, env(safe-area-inset-bottom));
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  background: var(--fondo);
+  color: var(--texto);
+}
+.hoja::backdrop { background: rgb(0 0 0 / 0.4); }
+.hoja form { display: grid; gap: 12px; padding: 18px 16px 16px; }
+.hoja h3 { margin: 0; font-size: 17px; font-weight: 600; text-align: center; }
+.hoja .titulo-recordatorio { margin: 0; font-size: 15px; color: var(--texto-2); text-align: center; overflow-wrap: anywhere; }
+.hoja .acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+
+/* ---------- Barra de pestañas ---------- */
+.barra {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  border-top: 0.5px solid var(--separador);
+  background: var(--superficie);
+  background: color-mix(in srgb, var(--superficie) 80%, transparent);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+.barra a {
+  flex: 1;
+  max-width: 130px;
+  height: var(--alto-barra);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: var(--texto-2);
+  font-size: 10px;
+  font-weight: 500;
+  text-decoration: none;
+}
+.barra a[aria-current="page"] { color: var(--azul); }
+.barra svg { width: 25px; height: 25px; }
+
+/* Mensaje flotante */
+.aviso {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--alto-barra) + env(safe-area-inset-bottom) + 12px);
+  max-width: calc(100% - 32px);
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: var(--superficie);
+  color: var(--texto);
+  font-size: 15px;
+  font-weight: 500;
+  box-shadow: 0 8px 30px rgb(0 0 0 / 0.18);
+  transform: translateX(-50%);
+}
+
+@media (max-width: 350px) {
+  .resumen { grid-template-columns: 1fr; }
+}
+
+/* =====================================================================
+   TEMAS DE ANIME
+   Las ilustraciones son dibujos propios (SVG), no imágenes oficiales.
+   ===================================================================== */
+
+/* ---------- One Piece: mar, rojo del sombrero y dorado ---------- */
+:root[data-tema="onepiece"] {
+  --fondo: #e6f2fa;
+  --azul: #c1121f;
+  --acento-2: #e9a400;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-tema="onepiece"] {
+    --fondo: #031421;
+    --superficie: #0c2235;
+    --segmento-activo: #1d3a55;
+    --azul: #ff4d5a;
+    --acento-2: #ffc94a;
+  }
+}
+
+/* ---------- Naruto: naranja y negro ---------- */
+:root[data-tema="naruto"] {
+  --fondo: #fff3e6;
+  --azul: #ea580c;
+  --acento-2: #1f2937;
+}
+@media (prefers-color-scheme: dark) {
+  :root[data-tema="naruto"] {
+    --fondo: #0c0a09;
+    --superficie: #1c1917;
+    --segmento-activo: #44403c;
+    --azul: #fb923c;
+    --acento-2: #fdba74;
+    --sobre-acento: #1c1917;
+  }
+}
+
+/* ---------- Black Clover: negro, dorado y verde (siempre oscuro) ---------- */
+:root[data-tema="blackclover"] {
+  color-scheme: dark;
+  --fondo: #09090c;
+  --superficie: #16161c;
+  --segmento-activo: #3a3423;
+  --texto: #f5efdc;
+  --texto-2: rgba(245, 239, 220, 0.6);
+  --separador: rgba(212, 175, 55, 0.22);
+  --relleno: rgba(212, 175, 55, 0.12);
+  --azul: #d4af37;
+  --verde: #4caf50;
+  --rojo: #ff5a4f;
+  --naranja: #f0b429;
+  --sobre-acento: #15130c;
+  --acento-2: #4caf50;
+}
+
+/* Ilustración del tema arriba de la pantalla Hoy */
+.banner { display: none; margin: 10px 0 0; overflow: hidden; border-radius: 16px; line-height: 0; }
+.banner svg { width: 100%; height: auto; }
+:root[data-tema="onepiece"] .banner-onepiece,
+:root[data-tema="naruto"] .banner-naruto,
+:root[data-tema="blackclover"] .banner-blackclover { display: block; }
+
+/* Frase del día: cartel de "Se busca", pergamino o grimorio */
+.frase-etiqueta { display: none; margin: 0 0 10px; font-size: 11px; font-weight: 800; letter-spacing: 0.18em; text-align: center; }
+
+:root[data-tema="onepiece"] .frase {
+  background: linear-gradient(#f7e8c6, #ecd6a6);
+  color: #3b2a17;
+  border: 2px solid #b8894a;
+  box-shadow: inset 0 0 0 4px #f7e8c6, inset 0 0 0 5px #b8894a;
+}
+:root[data-tema="onepiece"] .frase-etiqueta { display: block; color: #6b3f12; font-family: var(--serif); font-size: 15px; }
+:root[data-tema="onepiece"] .frase .frase-autor,
+:root[data-tema="onepiece"] .frase .tarjeta-etiqueta { color: rgba(59, 42, 23, 0.7); }
+:root[data-tema="onepiece"] .frase .boton-texto { color: #a4161a; }
+
+:root[data-tema="naruto"] .frase {
+  background: #fdf6e3;
+  color: #3a2410;
+  border-radius: 6px;
+  border-top: 10px solid #7c2d12;
+  border-bottom: 10px solid #7c2d12;
+}
+:root[data-tema="naruto"] .frase-etiqueta { display: block; color: #c2410c; }
+:root[data-tema="naruto"] .frase .frase-autor,
+:root[data-tema="naruto"] .frase .tarjeta-etiqueta { color: rgba(58, 36, 16, 0.7); }
+:root[data-tema="naruto"] .frase .boton-texto { color: #c2410c; }
+
+:root[data-tema="blackclover"] .frase {
+  background: linear-gradient(160deg, #221d12, #120f09);
+  color: #f3e3b3;
+  border: 1px solid #d4af37;
+  box-shadow: inset 0 0 0 4px #1a160d, inset 0 0 0 5px rgba(212, 175, 55, 0.5);
+}
+:root[data-tema="blackclover"] .frase-etiqueta { display: block; color: #d4af37; }
+
+/* ---------- Ajustes: elegir tema y fondo ---------- */
+.temas { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.tema-boton {
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 10px 4px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  background: var(--relleno);
+  color: var(--texto);
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.tema-boton svg { width: 36px; height: 36px; }
+.tema-boton[aria-pressed="true"] { border-color: var(--azul); }
+
+/* ---------- Fondo de pantalla elegido de la galería ---------- */
+body.con-fondo::before,
+body.con-fondo::after { content: ""; position: fixed; inset: 0; pointer-events: none; }
+body.con-fondo::before { z-index: -2; background: var(--imagen-fondo) center / cover no-repeat; }
+body.con-fondo::after { z-index: -1; background: color-mix(in srgb, var(--fondo) 72%, transparent); }
+body.con-fondo { background: transparent; }
+html:has(body.con-fondo) { background: var(--fondo); }
+
+/* =====================================================================
+   AJUSTES, EDICIÓN Y DESHACER
+   ===================================================================== */
+.encabezado { display: flex; align-items: flex-end; justify-content: space-between; gap: 12px; }
+.encabezado-textos { min-width: 0; }
+.boton-ajustes {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 2px;
+  border-radius: 50%;
+  background: var(--relleno);
+  color: var(--azul);
+}
+.boton-ajustes svg { width: 22px; height: 22px; }
+.boton-ajustes[aria-current="page"] { visibility: hidden; }
+
+.nota-pie { margin: 8px 4px 0; }
+.boton-peligro { display: block; margin: 12px auto 0; color: var(--rojo); font-weight: 600; }
+.estado-datos { margin: 0; font-weight: 600; }
+.estado-datos.alerta { color: var(--rojo); }
+
+.acerca { display: flex; align-items: center; gap: 14px; }
+.acerca-icono { width: 52px; height: 52px; flex: none; }
+.acerca-nombre { margin: 0 0 2px; font-weight: 600; }
+
+/* Zona que se toca para editar (título y detalle de cada fila) */
+.editable { cursor: pointer; border-radius: 6px; -webkit-user-select: none; user-select: none; }
+.editable:active { opacity: 0.55; }
+
+/* Recordatorio de copia de seguridad en la pantalla Hoy */
+.aviso-copia {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 26px;
+  padding: 12px 14px;
+  border-radius: var(--radio);
+  background: var(--superficie);
+}
+.aviso-copia p { flex: 1; margin: 0; font-size: 14px; color: var(--texto-2); }
+
+/* Mensaje flotante con botón "Deshacer" */
+.aviso { display: flex; align-items: center; gap: 14px; }
+.aviso button {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--azul);
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+/* =====================================================================
+   MODO ENFOQUE, TU SEMANA Y RECOMPENSA
+   ===================================================================== */
+.tarjeta-enfoque {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px 14px;
+  border: 0;
+  border-radius: 16px;
+  background: var(--superficie);
+  color: var(--texto);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.tarjeta-enfoque > svg { flex: none; width: 34px; height: 34px; padding: 6px; border-radius: 10px; background: var(--azul); color: var(--sobre-acento); }
+.tarjeta-enfoque-textos { flex: 1; display: grid; min-width: 0; }
+.tarjeta-enfoque-titulo { font-weight: 600; font-variant-numeric: tabular-nums; }
+.tarjeta-enfoque-sub { color: var(--texto-2); font-size: 13px; }
+.tarjeta-enfoque-accion { color: var(--azul); font-size: 15px; font-weight: 600; }
+
+.enfoque { display: grid; gap: 12px; padding: 18px 16px 16px; }
+.enfoque h3 { margin: 0; font-size: 17px; text-align: center; }
+.enfoque-sub { text-align: center; }
+.reloj { position: relative; display: grid; place-items: center; width: 210px; height: 210px; margin: 4px auto; }
+.reloj-anillo { position: absolute; inset: 0; width: 100%; height: 100%; transform: rotate(-90deg); }
+.reloj-anillo circle { fill: none; stroke-width: 8; stroke-linecap: round; }
+.reloj-anillo .pista { stroke: var(--relleno); }
+#reloj-progreso { stroke: var(--azul); stroke-dasharray: 339.29; transition: stroke-dashoffset 0.9s linear; }
+.reloj-tiempo { font-size: 46px; font-weight: 300; font-variant-numeric: tabular-nums; letter-spacing: -0.02em; }
+.enfoque .acciones { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+.barras { display: grid; grid-template-columns: repeat(7, 1fr); gap: 8px; align-items: end; }
+.barra-dia { display: grid; justify-items: center; gap: 6px; }
+.barra-pista { display: flex; align-items: flex-end; width: 100%; max-width: 28px; height: 72px; overflow: hidden; border-radius: 8px; background: var(--relleno); }
+.barra-relleno { display: block; width: 100%; border-radius: 8px; background: var(--verde); transition: height 0.3s; }
+.barra-letra { color: var(--texto-2); font-size: 12px; font-weight: 600; }
+.barra-dia.hoy .barra-letra { color: var(--azul); }
+.estadisticas { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
+.dato { display: grid; padding: 10px 12px; border-radius: 10px; background: var(--relleno); }
+.dato-valor { font-size: 20px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.dato-etiqueta { color: var(--texto-2); font-size: 12px; }
+
+.recompensa {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: linear-gradient(#f7e8c6, #ecd6a6);
+  color: #3b2a17;
+  border: 1.5px solid #b8894a;
+}
+.recompensa svg { flex: none; width: 40px; height: 30px; }
+.recompensa-textos { display: grid; }
+.recompensa-etiqueta { font-family: var(--serif); font-size: 12px; font-weight: 700; letter-spacing: 0.14em; }
+.recompensa-valor { font-family: var(--serif); font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; }

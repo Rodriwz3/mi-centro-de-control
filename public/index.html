@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="Mis tareas, prioridades, hábitos y objetivos en un solo lugar.">
+  <meta name="author" content="Rodricarabajal">
+  <!-- Seguridad: solo se cargan archivos de esta misma app -->
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src 'self' data: blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <meta name="theme-color" content="#f2f2f7" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#000000" media="(prefers-color-scheme: dark)">
+  <!-- Para que en el iPhone se vea como app al agregarla a la pantalla de inicio -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Mi Centro">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="icons/icon-192.png" type="image/png">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>Mi Centro de Control</title>
+  <script src="ics.js"></script>
+  <script type="module" src="app.js"></script>
+</head>
+<body>
+  <header class="encabezado">
+    <div class="encabezado-textos">
+      <p class="fecha" id="fecha-hoy"></p>
+      <h1 id="titulo-vista">Hoy</h1>
+    </div>
+    <a class="boton-ajustes" id="boton-ajustes" href="#ajustes" data-vista="ajustes" aria-label="Ajustes">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h9M17 7h3M4 17h3M11 17h9"/><circle cx="15" cy="7" r="2"/><circle cx="9" cy="17" r="2"/></svg>
+    </a>
+  </header>
+
+  <main>
+    <!-- HOY -->
+    <section class="vista" data-vista="hoy">
+      <!-- Ilustraciones de cada tema (dibujos propios, no imágenes oficiales) -->
+      <div class="banner banner-onepiece">
+        <svg viewBox="0 0 360 110" role="img" aria-label="Mar, barco pirata y sombrero de paja">
+          <defs>
+            <linearGradient id="op-cielo" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0" stop-color="#4fb0ec"/><stop offset="1" stop-color="#d4f0ff"/>
+            </linearGradient>
+          </defs>
+          <rect width="360" height="110" fill="url(#op-cielo)"/>
+          <circle cx="306" cy="28" r="15" fill="#ffd166"/>
+          <g fill="#ffffff" opacity="0.9">
+            <ellipse cx="62" cy="24" rx="22" ry="7"/><ellipse cx="80" cy="19" rx="14" ry="9"/>
+            <ellipse cx="196" cy="17" rx="18" ry="6"/><ellipse cx="208" cy="13" rx="10" ry="6"/>
+          </g>
+          <g transform="translate(112 22)">
+            <path d="M31 4v48" stroke="#5b3a1e" stroke-width="3"/>
+            <path d="M33 10q26 12 0 32z" fill="#fffaf0" stroke="#d9cbb0"/>
+            <path d="M31 2l16 5-16 5z" fill="#111111"/>
+            <circle cx="37" cy="7" r="1.8" fill="#ffffff"/>
+            <path d="M0 52h66l-11 15H11z" fill="#8b5a2b"/>
+            <path d="M6 58h54" stroke="#5b3a1e" stroke-width="1.5"/>
+          </g>
+          <path d="M0 82q15-8 30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0V110H0z" fill="#2a8fd4"/>
+          <g transform="translate(246 52)">
+            <ellipse cx="42" cy="32" rx="46" ry="11" fill="#e9c46a" stroke="#b8893b" stroke-width="1.5"/>
+            <path d="M15 32q0-32 27-32t27 32z" fill="#f4d58d" stroke="#b8893b" stroke-width="1.5"/>
+            <path d="M16 23q26 7 52 0v8q-26 7-52 0z" fill="#d62828"/>
+          </g>
+          <path d="M0 96q15-7 30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0V110H0z" fill="#1b6aa5"/>
+        </svg>
+      </div>
+      <div class="banner banner-naruto">
+        <svg viewBox="0 0 360 110" role="img" aria-label="Espiral naruto, hojas y shuriken">
+          <defs>
+            <linearGradient id="na-fondo" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0" stop-color="#f97316"/><stop offset="1" stop-color="#fdba74"/>
+            </linearGradient>
+          </defs>
+          <rect width="360" height="110" fill="url(#na-fondo)"/>
+          <path d="M0 110L55 66l45 30 62-52 70 56 55-36 73 34v12z" fill="#7c2d12" opacity="0.3"/>
+          <g transform="translate(72 55)">
+            <circle r="40" fill="#fff7ed" stroke="#7c2d12" stroke-width="2"/>
+            <path d="M-3 0a3 3 0 0 1 6 0a6 6 0 0 1-12 0a9 9 0 0 1 18 0a12 12 0 0 1-24 0a15 15 0 0 1 30 0a18 18 0 0 1-36 0a21 21 0 0 1 42 0" fill="none" stroke="#ea580c" stroke-width="4.5" stroke-linecap="round"/>
+          </g>
+          <g fill="#1f2937">
+            <path transform="translate(250 34) rotate(15)" d="M0-16L4-4 16 0 4 4 0 16-4 4-16 0-4-4z"/>
+            <path transform="translate(318 74) rotate(40) scale(0.75)" d="M0-16L4-4 16 0 4 4 0 16-4 4-16 0-4-4z"/>
+          </g>
+          <circle cx="250" cy="34" r="2.5" fill="#fbae6b"/>
+          <circle cx="318" cy="74" r="2" fill="#fdba74"/>
+          <g fill="#16a34a">
+            <path transform="translate(160 26) rotate(-20)" d="M0 0q11-10 22 0q-11 10-22 0z"/>
+            <path transform="translate(196 62) rotate(25)" d="M0 0q9-8 18 0q-9 8-18 0z"/>
+            <path transform="translate(282 92) rotate(-35)" d="M0 0q8-7 16 0q-8 7-16 0z"/>
+          </g>
+        </svg>
+      </div>
+      <div class="banner banner-blackclover">
+        <svg viewBox="0 0 360 110" role="img" aria-label="Grimorio abierto con un trébol de cinco hojas">
+          <defs>
+            <radialGradient id="bc-brillo" cx="0.5" cy="0.45" r="0.65">
+              <stop offset="0" stop-color="#3d3317"/><stop offset="1" stop-color="#0a0907"/>
+            </radialGradient>
+          </defs>
+          <rect width="360" height="110" fill="url(#bc-brillo)"/>
+          <g fill="#d4af37">
+            <path transform="translate(60 26)" d="M0-6L1.5-1.5 6 0 1.5 1.5 0 6-1.5 1.5-6 0-1.5-1.5z"/>
+            <path transform="translate(300 22) scale(1.3)" d="M0-6L1.5-1.5 6 0 1.5 1.5 0 6-1.5 1.5-6 0-1.5-1.5z"/>
+            <path transform="translate(92 80) scale(0.8)" d="M0-6L1.5-1.5 6 0 1.5 1.5 0 6-1.5 1.5-6 0-1.5-1.5z"/>
+            <path transform="translate(270 84)" d="M0-6L1.5-1.5 6 0 1.5 1.5 0 6-1.5 1.5-6 0-1.5-1.5z"/>
+            <path transform="translate(236 18) scale(0.7)" d="M0-6L1.5-1.5 6 0 1.5 1.5 0 6-1.5 1.5-6 0-1.5-1.5z"/>
+          </g>
+          <g transform="translate(180 76)">
+            <path d="M-70 0v28q35-6 70 4q35-10 70-4V0z" fill="#2b2113" stroke="#d4af37" stroke-width="1.5"/>
+            <path d="M0 2q-30-10-64-2v24q34-8 64 2z" fill="#f3e3b3" stroke="#b8952d"/>
+            <path d="M0 2q30-10 64-2v24q-34-8-64 2z" fill="#f3e3b3" stroke="#b8952d"/>
+            <path d="M0 2v24" stroke="#b8952d"/>
+          </g>
+          <g transform="translate(180 44)">
+            <circle r="30" fill="#4caf50" opacity="0.15"/>
+            <g fill="#2e7d32" stroke="#a5d6a7" stroke-width="0.8">
+              <path id="bc-hoja" d="M0 0C-10-6-12-20-4-22C0-23 0-18 0-16C0-18 0-23 4-22C12-20 10-6 0 0z"/>
+              <use href="#bc-hoja" transform="rotate(72)"/>
+              <use href="#bc-hoja" transform="rotate(144)"/>
+              <use href="#bc-hoja" transform="rotate(216)"/>
+              <use href="#bc-hoja" transform="rotate(288)"/>
+            </g>
+            <circle r="2.5" fill="#d4af37"/>
+          </g>
+        </svg>
+      </div>
+
+      <figure class="frase" id="frase-del-dia"></figure>
+
+      <div class="resumen" id="resumen"></div>
+
+      <div id="tarjeta-enfoque"></div>
+
+      <div class="titulo-seccion">
+        <h2>Lo más importante</h2>
+        <a href="#tareas">Ver todas</a>
+      </div>
+      <ul class="lista" id="hoy-tareas"></ul>
+
+      <div class="titulo-seccion">
+        <h2>Hábitos de hoy</h2>
+        <a href="#habitos">Editar</a>
+      </div>
+      <ul class="lista" id="hoy-habitos"></ul>
+
+      <h2>Tu semana</h2>
+      <div class="panel" id="tu-semana"></div>
+
+      <div id="aviso-copia"></div>
+
+      <p class="firma">Mi Centro de Control · by Rodricarabajal</p>
+    </section>
+
+    <!-- TAREAS -->
+    <section class="vista" data-vista="tareas" hidden>
+      <form class="formulario" id="form-tarea" autocomplete="off">
+        <input type="text" name="titulo" placeholder="Nueva tarea" maxlength="120" required aria-label="Nueva tarea">
+        <div class="fila">
+          <label class="etiqueta">Prioridad
+            <select name="prioridad">
+              <option value="alta">Alta</option>
+              <option value="media" selected>Media</option>
+              <option value="baja">Baja</option>
+            </select>
+          </label>
+          <label class="etiqueta">Fecha (opcional)
+            <input type="date" name="fecha">
+          </label>
+        </div>
+        <label class="etiqueta">Avisarme a las (opcional, va al Calendario del iPhone)
+          <input type="time" name="aviso">
+        </label>
+        <button type="submit" class="boton">Agregar tarea</button>
+      </form>
+
+      <div class="segmentado" role="group" aria-label="Filtrar tareas">
+        <button type="button" data-accion="filtro" data-filtro="pendientes">Pendientes</button>
+        <button type="button" data-accion="filtro" data-filtro="hechas">Hechas</button>
+        <button type="button" data-accion="filtro" data-filtro="todas">Todas</button>
+      </div>
+      <ul class="lista" id="lista-tareas"></ul>
+      <p class="nota nota-pie">Tocá una tarea para editarla o borrarla.</p>
+      <button type="button" class="boton-texto boton-peligro" data-accion="borrar-hechas" id="boton-borrar-hechas" hidden></button>
+    </section>
+
+    <!-- HÁBITOS -->
+    <section class="vista" data-vista="habitos" hidden>
+      <p class="nota nota-seccion">Tocá el círculo cada vez que lo hacés: suma 1. Tocá el nombre para editarlo. Con la campana, el iPhone te lo recuerda.</p>
+      <ul class="lista" id="lista-habitos"></ul>
+
+      <h2>Nuevo hábito</h2>
+      <form class="formulario" id="form-habito" autocomplete="off">
+        <input type="text" name="nombre" placeholder="Ej.: tomar 2 litros de agua" maxlength="60" required aria-label="Nombre del hábito">
+        <label class="etiqueta">Veces por día
+          <select name="meta">
+            <option value="1" selected>1 vez</option>
+            <option value="2">2 veces</option>
+            <option value="3">3 veces</option>
+            <option value="4">4 veces</option>
+            <option value="5">5 veces</option>
+          </select>
+        </label>
+        <fieldset class="dias-semana">
+          <legend class="etiqueta">Qué días</legend>
+          <div class="chips-dias">
+            <label class="chip-dia"><input type="checkbox" name="dias" value="1" checked><span aria-label="Lunes">L</span></label>
+            <label class="chip-dia"><input type="checkbox" name="dias" value="2" checked><span aria-label="Martes">M</span></label>
+            <label class="chip-dia"><input type="checkbox" name="dias" value="3" checked><span aria-label="Miércoles">M</span></label>
+            <label class="chip-dia"><input type="checkbox" name="dias" value="4" checked><span aria-label="Jueves">J</span></label>
+            <label class="chip-dia"><input type="checkbox" name="dias" value="5" checked><span aria-label="Viernes">V</span></label>
+            <label class="chip-dia"><input type="checkbox" name="dias" value="6" checked><span aria-label="Sábado">S</span></label>
+            <label class="chip-dia"><input type="checkbox" name="dias" value="0" checked><span aria-label="Domingo">D</span></label>
+          </div>
+        </fieldset>
+        <button type="submit" class="boton">Agregar hábito</button>
+      </form>
+    </section>
+
+    <!-- OBJETIVOS -->
+    <section class="vista" data-vista="objetivos" hidden>
+      <form class="formulario" id="form-objetivo" autocomplete="off">
+        <input type="text" name="titulo" placeholder="Nuevo objetivo" maxlength="120" required aria-label="Nuevo objetivo">
+        <label class="etiqueta">Fecha meta (opcional)
+          <input type="date" name="fecha">
+        </label>
+        <button type="submit" class="boton">Agregar objetivo</button>
+      </form>
+      <h2>Mis objetivos</h2>
+      <ul class="lista" id="lista-objetivos"></ul>
+      <p class="nota nota-pie">Tocá un objetivo para editarlo o borrarlo.</p>
+    </section>
+
+    <!-- FRASES -->
+    <section class="vista" data-vista="frases" hidden>
+      <form class="formulario" id="form-frase" autocomplete="off">
+        <textarea name="texto" placeholder="Escribí una frase que te inspire" maxlength="240" required aria-label="Frase"></textarea>
+        <div class="fila">
+          <label class="etiqueta">Autor o personaje
+            <input type="text" name="autor" maxlength="80" placeholder="Opcional">
+          </label>
+          <label class="etiqueta">Categoría
+            <select name="categoria">
+              <option value="onepiece">One Piece</option>
+              <option value="naruto">Naruto</option>
+              <option value="blackclover">Black Clover</option>
+              <option value="anime">Otros animes</option>
+              <option value="motivacion">Motivación</option>
+              <option value="deporte">Deporte</option>
+              <option value="mias" selected>Mías</option>
+            </select>
+          </label>
+        </div>
+        <button type="submit" class="boton">Guardar frase</button>
+      </form>
+      <div id="lista-frases"></div>
+    </section>
+
+    <!-- AJUSTES -->
+    <section class="vista" data-vista="ajustes" hidden>
+      <h2>Apariencia</h2>
+      <div class="panel">
+        <div class="temas" role="group" aria-label="Tema de la app">
+          <button type="button" class="tema-boton" data-accion="tema" data-tema="apple">
+            <svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="16" fill="#007aff"/><path d="M11 18.5l4.5 4.5L25 13.5" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Clásico</span>
+          </button>
+          <button type="button" class="tema-boton" data-accion="tema" data-tema="onepiece">
+            <svg viewBox="0 0 36 36" aria-hidden="true"><ellipse cx="18" cy="25" rx="16" ry="5" fill="#e9c46a" stroke="#b8893b"/><path d="M8 25q0-15 10-15t10 15z" fill="#f4d58d" stroke="#b8893b"/><path d="M8.5 21q9.5 3 19 0v3.5q-9.5 3-19 0z" fill="#d62828"/></svg>
+            <span>One Piece</span>
+          </button>
+          <button type="button" class="tema-boton" data-accion="tema" data-tema="naruto">
+            <svg viewBox="0 0 36 36" aria-hidden="true"><circle cx="18" cy="18" r="16" fill="#fff7ed" stroke="#ea580c" stroke-width="1.5"/><path d="M16.5 18a1.5 1.5 0 0 1 3 0a3 3 0 0 1-6 0a4.5 4.5 0 0 1 9 0a6 6 0 0 1-12 0a7.5 7.5 0 0 1 15 0a9 9 0 0 1-18 0" fill="none" stroke="#ea580c" stroke-width="2" stroke-linecap="round"/></svg>
+            <span>Naruto</span>
+          </button>
+          <button type="button" class="tema-boton" data-accion="tema" data-tema="blackclover">
+            <svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="8" fill="#14120c"/><g transform="translate(18 18.5) scale(0.62)" fill="#2e7d32" stroke="#a5d6a7"><path id="mini-hoja" d="M0 0C-10-6-12-20-4-22C0-23 0-18 0-16C0-18 0-23 4-22C12-20 10-6 0 0z"/><use href="#mini-hoja" transform="rotate(72)"/><use href="#mini-hoja" transform="rotate(144)"/><use href="#mini-hoja" transform="rotate(216)"/><use href="#mini-hoja" transform="rotate(288)"/></g><circle cx="18" cy="18.5" r="1.6" fill="#d4af37"/></svg>
+            <span>Black Clover</span>
+          </button>
+        </div>
+        <p class="nota">Con los temas de anime, la frase del día prioriza las de ese anime.</p>
+      </div>
+
+      <h2>Fondo de pantalla</h2>
+      <div class="panel">
+        <p class="nota">Usá una imagen de tu galería, por ejemplo de tu anime favorito. Queda guardada solo en este teléfono.</p>
+        <div class="acciones-datos">
+          <button type="button" class="boton boton-secundario" data-accion="elegir-fondo">Elegir imagen</button>
+          <button type="button" class="boton boton-secundario" data-accion="quitar-fondo" id="boton-quitar-fondo" hidden>Quitar fondo</button>
+          <input type="file" id="archivo-fondo" accept="image/*" hidden>
+        </div>
+      </div>
+
+      <h2>Tus datos</h2>
+      <div class="panel">
+        <p class="estado-datos" id="estado-copia"></p>
+        <p class="nota" id="estado-almacenamiento"></p>
+        <p class="nota">Todo se guarda solo en este dispositivo. Si se borra Safari o cambiás de teléfono, solo una copia te salva.</p>
+        <div class="acciones-datos">
+          <button type="button" class="boton" data-accion="exportar">Descargar copia</button>
+          <button type="button" class="boton boton-secundario" data-accion="importar">Restaurar copia</button>
+          <input type="file" id="archivo-importar" accept="application/json,.json" hidden>
+        </div>
+      </div>
+
+      <h2>Acerca de</h2>
+      <div class="panel acerca">
+        <svg class="acerca-icono" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="acerca-grad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6366f1"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs><rect width="64" height="64" rx="14" fill="url(#acerca-grad)"/><path d="M19 33l9 9 18-19" fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div>
+          <p class="acerca-nombre">Mi Centro de Control</p>
+          <p class="nota">by Rodricarabajal · versión 1.0</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Modo enfoque: temporizador de estudio -->
+  <dialog class="hoja" id="dialogo-enfoque" aria-labelledby="enfoque-titulo">
+    <div class="enfoque">
+      <h3 id="enfoque-titulo">Modo enfoque</h3>
+      <p class="nota enfoque-sub" id="enfoque-sub"></p>
+      <div class="reloj">
+        <svg class="reloj-anillo" viewBox="0 0 120 120" aria-hidden="true">
+          <circle class="pista" cx="60" cy="60" r="54"/>
+          <circle id="reloj-progreso" cx="60" cy="60" r="54"/>
+        </svg>
+        <span class="reloj-tiempo" id="reloj-tiempo" role="timer" aria-live="off">25:00</span>
+      </div>
+      <div class="fila" id="enfoque-config">
+        <label class="etiqueta">Duración
+          <select id="enfoque-duracion">
+            <option value="15">15 min</option>
+            <option value="25" selected>25 min</option>
+            <option value="45">45 min</option>
+            <option value="60">60 min</option>
+          </select>
+        </label>
+        <label class="etiqueta">¿En qué vas a trabajar?
+          <select id="enfoque-tarea"></select>
+        </label>
+      </div>
+      <div class="acciones" id="enfoque-acciones"></div>
+      <p class="nota">Dejá la app abierta: la pantalla no se apaga mientras corre el tiempo.</p>
+    </div>
+  </dialog>
+
+  <!-- Hoja para editar una tarea, un hábito o un objetivo -->
+  <dialog class="hoja" id="dialogo-editar" aria-labelledby="editar-titulo">
+    <form id="form-editar" autocomplete="off">
+      <h3 id="editar-titulo">Editar</h3>
+      <label class="etiqueta"><span id="editar-etiqueta-nombre">Nombre</span>
+        <input type="text" name="nombre" maxlength="120" required>
+      </label>
+      <div class="fila">
+        <label class="etiqueta" data-campo="prioridad">Prioridad
+          <select name="prioridad">
+            <option value="alta">Alta</option>
+            <option value="media">Media</option>
+            <option value="baja">Baja</option>
+          </select>
+        </label>
+        <label class="etiqueta" data-campo="fecha"><span id="editar-etiqueta-fecha">Fecha</span>
+          <input type="date" name="fecha">
+        </label>
+        <label class="etiqueta" data-campo="meta">Veces por día
+          <select name="meta">
+            <option value="1">1 vez</option>
+            <option value="2">2 veces</option>
+            <option value="3">3 veces</option>
+            <option value="4">4 veces</option>
+            <option value="5">5 veces</option>
+          </select>
+        </label>
+      </div>
+      <fieldset class="dias-semana" data-campo="dias">
+        <legend class="etiqueta">Qué días</legend>
+        <div class="chips-dias">
+          <label class="chip-dia"><input type="checkbox" name="dias" value="1"><span aria-label="Lunes">L</span></label>
+          <label class="chip-dia"><input type="checkbox" name="dias" value="2"><span aria-label="Martes">M</span></label>
+          <label class="chip-dia"><input type="checkbox" name="dias" value="3"><span aria-label="Miércoles">M</span></label>
+          <label class="chip-dia"><input type="checkbox" name="dias" value="4"><span aria-label="Jueves">J</span></label>
+          <label class="chip-dia"><input type="checkbox" name="dias" value="5"><span aria-label="Viernes">V</span></label>
+          <label class="chip-dia"><input type="checkbox" name="dias" value="6"><span aria-label="Sábado">S</span></label>
+          <label class="chip-dia"><input type="checkbox" name="dias" value="0"><span aria-label="Domingo">D</span></label>
+        </div>
+      </fieldset>
+      <div class="acciones">
+        <button type="button" class="boton boton-secundario" data-accion="cerrar-dialogo">Cancelar</button>
+        <button type="submit" class="boton">Guardar</button>
+      </div>
+      <button type="button" class="boton-texto boton-peligro" data-accion="eliminar-editado">Eliminar</button>
+    </form>
+  </dialog>
+
+  <!-- Hoja para crear un recordatorio en el Calendario del iPhone -->
+  <dialog class="hoja" id="dialogo-recordatorio" aria-labelledby="titulo-dialogo">
+    <form id="form-recordatorio">
+      <h3 id="titulo-dialogo">Recordatorio</h3>
+      <p class="titulo-recordatorio" id="rec-titulo"></p>
+      <div class="fila">
+        <label class="etiqueta">Día
+          <input type="date" name="fecha" required>
+        </label>
+        <label class="etiqueta">Hora
+          <input type="time" name="hora" required>
+        </label>
+      </div>
+      <label class="etiqueta">Repetir
+        <select name="repetir">
+          <option value="no">Solo una vez</option>
+          <option value="diario">Todos los días</option>
+        </select>
+      </label>
+      <p class="nota">Se agrega al Calendario del iPhone, que te avisa a esa hora aunque la app esté cerrada.</p>
+      <div class="acciones">
+        <button type="button" class="boton boton-secundario" data-accion="cerrar-dialogo">Cancelar</button>
+        <button type="submit" class="boton">Agregar</button>
+      </div>
+    </form>
+  </dialog>
+
+  <nav class="barra" aria-label="Secciones">
+    <a href="#hoy" data-vista="hoy">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+      <span>Hoy</span>
+    </a>
+    <a href="#tareas" data-vista="tareas">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 6h10M10 12h10M10 18h10"/><circle cx="5" cy="6" r="1.6"/><circle cx="5" cy="12" r="1.6"/><circle cx="5" cy="18" r="1.6"/></svg>
+      <span>Tareas</span>
+    </a>
+    <a href="#habitos" data-vista="habitos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 2l4 4-4 4"/><path d="M3 11V9a3 3 0 0 1 3-3h15"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v2a3 3 0 0 1-3 3H3"/></svg>
+      <span>Hábitos</span>
+    </a>
+    <a href="#objetivos" data-vista="objetivos">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>
+      <span>Objetivos</span>
+    </a>
+    <a href="#frases" data-vista="frases">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.6A8 8 0 1 1 21 12z"/></svg>
+      <span>Frases</span>
+    </a>
+  </nav>
+
+  <div class="aviso" id="aviso" role="status" hidden></div>
+</body>
+</html>
